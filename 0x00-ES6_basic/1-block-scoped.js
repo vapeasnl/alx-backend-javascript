@@ -1,13 +1,13 @@
-//1-block-scoped.js
+/* eslint-disable */
 
 export default function taskBlock(trueOrFalse) {
-	    let task = false; // Use let instead of var
-	    let task2 = true; // Use let instead of var
-	  
-	    if (trueOrFalse) {
-		          task = true; // Do not use var here
-		          task2 = false; // Do not use var here
-		        }
-	  
-	    return [task, task2];
-	  }
+  const task = false;
+  const task2 = true;
+
+  if (trueOrFalse) {
+    const task = true;
+    const task2 = false;
+  }
+
+  return [task, task2];
+}
