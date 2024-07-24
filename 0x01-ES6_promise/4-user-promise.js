@@ -1,8 +1,6 @@
-function signUpUser(firstName, lastName) {
-    return new Promise((resolve, reject) => {
-        const user = { firstName, lastName };
-        resolve(user);
-    });
+export default function signUpUser(firstName, lastName) {
+  return new Promise((resolve) => {
+    const newUser = { firstName, lastName }; // Using property shorthand
+    resolve(newUser);
+  });
 }
-
-export default signUpUser;
