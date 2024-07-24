@@ -1,7 +1,5 @@
-export default function uploadPhoto(filename) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      reject(new Error(`${filename} cannot be processed`));
-    }, 1000);
+export default function uploadPhoto(fileName) {
+  return new Promise((_, reject) => { // I only want to reject, so I passed _ as resolved
+    reject(Error(`${fileName} cannot be processed`));
   });
 }
