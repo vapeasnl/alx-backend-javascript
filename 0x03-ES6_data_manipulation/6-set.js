@@ -4,3 +4,4 @@ export default function setFromArray(array) {
     }
     throw new Error('Expected an Array argument');
   }
+  
