@@ -1,44 +1,40 @@
 const fs = require('fs');
 
-const countStudents = (path) => new Promise((resolve, reject) => {
-  fs.readFile(path, 'utf8', (err, data) => {
-    if (err) {
-      reject(new Error('Cannot load the database'));
-      return;
-    }
-
-    // console.log('CSV file content:', data);
-
-    const lines = data.trim().split('\n').filter((line) => line.trim() !== '');
-    if (lines.length === 0) {
-      reject(new Error('Cannot load the database'));
-      return;
-    }
-
-    lines.shift();
-    const students = {};
-    let totalStudents = 0;
-
-    lines.forEach((line) => {
-      const [firstname, , , field] = line.split(',');
-      if (firstname && field) {
-        if (!students[field]) {
-          students[field] = [];
-        }
-        students[field].push(firstname);
-        totalStudents += 1;
+async function countStudents(path) {
+  return new Promise((resolve, reject) => {
+    fs.readFile(path, 'utf8', (err, response) => {
+      if (err) {
+        reject(new Error('Cannot load the database'));
+        return;
       }
+
+      const students = response
+        .trim()
+        .split('\n')
+        .map((student) => student.split(','));
+      students.shift();
+      const fields = {};
+
+      students.forEach((student) => {
+        if (student[3] in fields) fields[student[3]].push(student[0]);
+        else fields[student[3]] = [student[0]];
+      });
+
+      console.log(`Number of students: ${students.length}`);
+
+      Object.keys(fields).forEach((field) => {
+        let message = `Number of students in ${field}: ${fields[field].length}.`;
+        message += ` List: ${fields[field].join(', ')}`;
+        console.log(message);
+      });
+
+      resolve();
     });
-
-    let result = `Number of students: ${totalStudents}`;
-    for (const field in students) {
-      if (Object.prototype.hasOwnProperty.call(students, field)) {
-        const list = students[field].join(', ');
-        result = `Number of students in ${field}: ${students[field].length}. List: ${list}`;
-      }
-    }
-    resolve(result);
   });
-});
-
+}
 module.exports = countStudents;
+// Usage
+// const databasePath = 'database.csv';
+// countStudents(databasePath)
+// .then(() => console.log('Process completed'))
+// .catch((error) => console.error(error.message));
